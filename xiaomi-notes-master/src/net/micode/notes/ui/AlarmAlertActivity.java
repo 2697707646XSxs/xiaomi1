@@ -87,7 +87,7 @@ public class AlarmAlertActivity extends Activity implements OnClickListener, OnD
         PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
         return pm.isScreenOn();
     }
-
+//sjahu
     private void playAlarmSound() {
         Uri url = RingtoneManager.getActualDefaultRingtoneUri(this, RingtoneManager.TYPE_ALARM);
 

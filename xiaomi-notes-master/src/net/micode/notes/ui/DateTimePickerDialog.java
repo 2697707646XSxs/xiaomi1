@@ -45,9 +45,12 @@ public class DateTimePickerDialog extends AlertDialog implements OnClickListener
     }
 
     public DateTimePickerDialog(Context context, long date) {
+        //对该界面对话框的实例化
         super(context);
+        //对数据库的操作
         mDateTimePicker = new DateTimePicker(context);
         setView(mDateTimePicker);
+        //添加一个子视图
         mDateTimePicker.setOnDateTimeChangedListener(new OnDateTimeChangedListener() {
             public void onDateTimeChanged(DateTimePicker view, int year, int month,
                     int dayOfMonth, int hourOfDay, int minute) {
@@ -56,15 +59,20 @@ public class DateTimePickerDialog extends AlertDialog implements OnClickListener
                 mDate.set(Calendar.DAY_OF_MONTH, dayOfMonth);
                 mDate.set(Calendar.HOUR_OF_DAY, hourOfDay);
                 mDate.set(Calendar.MINUTE, minute);
+                //将视图中的各选项设置为系统当前时间
                 updateTitle(mDate.getTimeInMillis());
             }
         });
         mDate.setTimeInMillis(date);
+        //得到系统时间
         mDate.set(Calendar.SECOND, 0);
+        //将秒数设置为0
         mDateTimePicker.setCurrentDate(mDate.getTimeInMillis());
         setButton(context.getString(R.string.datetime_dialog_ok), this);
         setButton2(context.getString(R.string.datetime_dialog_cancel), (OnClickListener)null);
+        //设置按钮
         set24HourView(DateFormat.is24HourFormat(this.getContext()));
+        //时间标准化打印
         updateTitle(mDate.getTimeInMillis());
     }
 
@@ -74,7 +82,7 @@ public class DateTimePickerDialog extends AlertDialog implements OnClickListener
 
     public void setOnDateTimeSetListener(OnDateTimeSetListener callBack) {
         mOnDateTimeSetListener = callBack;
-    }
+    }//将时间日期滚动选择控件实例化
 
     private void updateTitle(long date) {
         int flag =
@@ -84,11 +92,13 @@ public class DateTimePickerDialog extends AlertDialog implements OnClickListener
         flag |= mIs24HourView ? DateUtils.FORMAT_24HOUR : DateUtils.FORMAT_24HOUR;
         setTitle(DateUtils.formatDateTime(this.getContext(), date, flag));
     }
+    //android开发中常见日期管理工具类（API）——DateUtils：按照上下午显示时间
 
     public void onClick(DialogInterface arg0, int arg1) {
         if (mOnDateTimeSetListener != null) {
             mOnDateTimeSetListener.OnDateTimeSet(this, mDate.getTimeInMillis());
         }
     }
-
+    //第一个参数arg0是接收到点击事件的对话框
+    //第二个参数arg1是该对话框上的按钮
 }

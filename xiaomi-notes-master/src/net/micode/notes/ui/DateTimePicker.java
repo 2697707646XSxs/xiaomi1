@@ -134,11 +134,14 @@ public class DateTimePicker extends FrameLayout {
             int minValue = mMinuteSpinner.getMinValue();
             int maxValue = mMinuteSpinner.getMaxValue();
             int offset = 0;
+            //设置offset，作为小时改变的一个记录数据
             if (oldVal == maxValue && newVal == minValue) {
                 offset += 1;
             } else if (oldVal == minValue && newVal == maxValue) {
                 offset -= 1;
             }
+            //如果原值为59，新值为0，则offset加1
+            //如果原值为0，新值为59，则offset减1
             if (offset != 0) {
                 mDate.add(Calendar.HOUR_OF_DAY, offset);
                 mHourSpinner.setValue(getCurrentHour());
@@ -158,6 +161,7 @@ public class DateTimePicker extends FrameLayout {
     };
 
     private NumberPicker.OnValueChangeListener mOnAmPmChangedListener = new NumberPicker.OnValueChangeListener() {
+
         @Override
         public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
             mIsAm = !mIsAm;

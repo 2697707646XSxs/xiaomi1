@@ -757,13 +757,16 @@ public class NoteEditActivity extends Activity implements OnClickListener,
         if (childCount == 1) {
             return;
         }
-
+        //没有编辑框的话直接返回
         for (int i = index + 1; i < childCount; i++) {
             ((NoteEditText) mEditTextList.getChildAt(i).findViewById(R.id.et_edit_text))
                     .setIndex(i - 1);
+            //通过id把编辑框存在便签编辑框中
+
         }
 
         mEditTextList.removeViewAt(index);
+        //删除特定位置的视图
         NoteEditText edit = null;
         if(index == 0) {
             edit = (NoteEditText) mEditTextList.getChildAt(0).findViewById(

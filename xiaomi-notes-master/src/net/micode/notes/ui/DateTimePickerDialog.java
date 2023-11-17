@@ -32,9 +32,13 @@ import android.text.format.DateUtils;
 public class DateTimePickerDialog extends AlertDialog implements OnClickListener {
 
     private Calendar mDate = Calendar.getInstance();
+    //创建一个Calendar类型的变量 mDate，方便时间的操作
     private boolean mIs24HourView;
     private OnDateTimeSetListener mOnDateTimeSetListener;
+    //声明一个时间日期滚动选择控件 mOnDateTimeSetListener
     private DateTimePicker mDateTimePicker;
+    //DateTimePicker控件，控件一般用于让用户可以从日期列表中选择单个值。
+    //运行时，单击控件边上的下拉箭头，会显示为两个部分：一个下拉列表，一个用于选择日期的
 
     public interface OnDateTimeSetListener {
         void OnDateTimeSet(AlertDialog dialog, long date);

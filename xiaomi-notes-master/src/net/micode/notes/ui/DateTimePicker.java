@@ -161,7 +161,7 @@ public class DateTimePicker extends FrameLayout {
     };
 
     private NumberPicker.OnValueChangeListener mOnAmPmChangedListener = new NumberPicker.OnValueChangeListener() {
-
+        //对AM和PM的监听
         @Override
         public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
             mIsAm = !mIsAm;
@@ -181,12 +181,13 @@ public class DateTimePicker extends FrameLayout {
     }
 
     public DateTimePicker(Context context) {
+
         this(context, System.currentTimeMillis());
-    }
+    }//通过对数据库的访问，获取当前的系统时间
 
     public DateTimePicker(Context context, long date) {
         this(context, date, DateFormat.is24HourFormat(context));
-    }
+    }//上面函数的得到的是一个天文数字（1970至今的秒数），需要DateFormat将其变得有意义
 
     public DateTimePicker(Context context, long date, boolean is24HourView) {
         super(context);
@@ -194,7 +195,9 @@ public class DateTimePicker extends FrameLayout {
         mInitialising = true;
         mIsAm = getCurrentHourOfDay() >= HOURS_IN_HALF_DAY;
         inflate(context, R.layout.datetime_picker, this);
-
+        //如果当前Activity里用到别的layout，比如对话框layout
+        //还要设置这个layout上的其他组件的内容，就必须用inflate()方法先将对话框的layout找出来
+        //然后再用findViewById()找到它上面的其它组件
         mDateSpinner = (NumberPicker) findViewById(R.id.date);
         mDateSpinner.setMinValue(DATE_SPINNER_MIN_VAL);
         mDateSpinner.setMaxValue(DATE_SPINNER_MAX_VAL);
@@ -243,6 +246,9 @@ public class DateTimePicker extends FrameLayout {
         mAmPmSpinner.setEnabled(enabled);
         mIsEnabled = enabled;
     }
+    //存在疑问！！！！！！！！！！！！！setEnabled的作用
+    //下面的代码通过原程序的注释已经比较清晰，另外可以通过函数名来判断
+    //下面的各函数主要是对上面代码引用到的各函数功能的实现
 
     @Override
     public boolean isEnabled() {
@@ -268,7 +274,7 @@ public class DateTimePicker extends FrameLayout {
         cal.setTimeInMillis(date);
         setCurrentDate(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH),
                 cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE));
-    }
+    }//实现函数功能——设置当前的时间，参数是date
 
     /**
      * Set the current date
@@ -286,7 +292,7 @@ public class DateTimePicker extends FrameLayout {
         setCurrentDay(dayOfMonth);
         setCurrentHour(hourOfDay);
         setCurrentMinute(minute);
-    }
+    }//实现函数功能——设置当前的时间，参数是各详细的变量
 
     /**
      * Get current year

@@ -1064,3 +1064,4 @@ public class NoteEditActivity extends Activity implements OnClickListener,
         Toast.makeText(this, resId, duration).show();
     }
 }
+//主要的类

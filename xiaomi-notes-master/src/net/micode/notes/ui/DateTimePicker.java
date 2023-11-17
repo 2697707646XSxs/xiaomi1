@@ -29,7 +29,8 @@ import android.widget.FrameLayout;
 import android.widget.NumberPicker;
 
 public class DateTimePicker extends FrameLayout {
-
+    //FrameLayout是布局模板之一
+    //所有的子元素全部在屏幕的右上方
     private static final boolean DEFAULT_ENABLE_STATE = true;
 
     private static final int HOURS_IN_HALF_DAY = 12;
@@ -45,13 +46,15 @@ public class DateTimePicker extends FrameLayout {
     private static final int MINUT_SPINNER_MAX_VAL = 59;
     private static final int AMPM_SPINNER_MIN_VAL = 0;
     private static final int AMPM_SPINNER_MAX_VAL = 1;
-
+    //初始化控件
     private final NumberPicker mDateSpinner;
     private final NumberPicker mHourSpinner;
     private final NumberPicker mMinuteSpinner;
     private final NumberPicker mAmPmSpinner;
+    //NumberPicker是数字选择器
+    //这里定义的四个变量全部是在设置闹钟时需要选择的变量（如日期、时、分、上午或者下午）
     private Calendar mDate;
-
+    //定义了Calendar类型的变量mDate，用于操作时间
     private String[] mDateDisplayValues = new String[DAYS_IN_ALL_WEEK];
 
     private boolean mIsAm;
@@ -72,22 +75,27 @@ public class DateTimePicker extends FrameLayout {
             onDateTimeChanged();
         }
     };
-
+    //OnValueChangeListener，这是时间改变监听器，这里主要是对日期的监听
+    //将现在日期的值传递给mDate；updateDateControl是同步操作
     private NumberPicker.OnValueChangeListener mOnHourChangedListener = new NumberPicker.OnValueChangeListener() {
+        //这里是对 小时（Hour） 的监听
         @Override
         public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
             boolean isDateChanged = false;
             Calendar cal = Calendar.getInstance();
+            //声明一个Calendar的变量cal，便于后续的操作
             if (!mIs24HourView) {
                 if (!mIsAm && oldVal == HOURS_IN_HALF_DAY - 1 && newVal == HOURS_IN_HALF_DAY) {
                     cal.setTimeInMillis(mDate.getTimeInMillis());
                     cal.add(Calendar.DAY_OF_YEAR, 1);
                     isDateChanged = true;
+                    //这里是对于12小时制时，晚上11点和12点交替时对日期的更改
                 } else if (mIsAm && oldVal == HOURS_IN_HALF_DAY && newVal == HOURS_IN_HALF_DAY - 1) {
                     cal.setTimeInMillis(mDate.getTimeInMillis());
                     cal.add(Calendar.DAY_OF_YEAR, -1);
                     isDateChanged = true;
                 }
+                //这里是对于12小时制时，凌晨11点和12点交替时对日期的更改
                 if (oldVal == HOURS_IN_HALF_DAY - 1 && newVal == HOURS_IN_HALF_DAY ||
                         oldVal == HOURS_IN_HALF_DAY && newVal == HOURS_IN_HALF_DAY - 1) {
                     mIsAm = !mIsAm;
@@ -98,14 +106,18 @@ public class DateTimePicker extends FrameLayout {
                     cal.setTimeInMillis(mDate.getTimeInMillis());
                     cal.add(Calendar.DAY_OF_YEAR, 1);
                     isDateChanged = true;
+                    //这里是对于24小时制时，晚上11点和12点交替时对日期的更改
                 } else if (oldVal == 0 && newVal == HOURS_IN_ALL_DAY - 1) {
                     cal.setTimeInMillis(mDate.getTimeInMillis());
                     cal.add(Calendar.DAY_OF_YEAR, -1);
                     isDateChanged = true;
                 }
             }
+            //这里是对于12小时制时，凌晨11点和12点交替时对日期的更改
             int newHour = mHourSpinner.getValue() % HOURS_IN_HALF_DAY + (mIsAm ? 0 : HOURS_IN_HALF_DAY);
+            //通过数字选择器对newHour的赋值
             mDate.set(Calendar.HOUR_OF_DAY, newHour);
+            //通过set函数将新的Hour值传给mDate
             onDateTimeChanged();
             if (isDateChanged) {
                 setCurrentYear(cal.get(Calendar.YEAR));
@@ -117,6 +129,7 @@ public class DateTimePicker extends FrameLayout {
 
     private NumberPicker.OnValueChangeListener mOnMinuteChangedListener = new NumberPicker.OnValueChangeListener() {
         @Override
+        //这里是对 分钟（Minute）改变的监听
         public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
             int minValue = mMinuteSpinner.getMinValue();
             int maxValue = mMinuteSpinner.getMaxValue();
